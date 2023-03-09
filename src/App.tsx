@@ -3,29 +3,23 @@ import './App.css';
 
 function App() {
 
-  const [resources, setResources] = useState('posts')
-  const [items, setItems] = useState([])
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
-  useEffect(()=>{
-    fetch(`https://jsonplaceholder.typicode.com/${resources}`)
-      .then(response => response.json())
-      .then(json => setItems(json))
-  },[resources])
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+    setWindowHeight(window.innerHeight);
+  }
 
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, [])
+  
   return (
-    <div className="App">
-      <div>
-      <button onClick={()=>setResources('posts')}>Post</button>
-      <button onClick={()=>setResources('users')}>Users</button>
-      <button onClick={()=>setResources('comments')}>Comments</button>
-      <h1>{resources}</h1>
-      </div>
-      <div>
-      {items.map(item=>{
-        return <pre>{JSON.stringify(item)}</pre>
-      })}
-      </div>
-
+    <div>
+      {windowWidth}
+      <br />
+      {windowHeight}
     </div>
   );
 }
