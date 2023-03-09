@@ -1,25 +1,19 @@
 import React, { useState,useEffect } from 'react';
-import './App.css';
 
 function App() {
+  const [name, setName] = useState('');
+  const renderCount = React.useRef(0);
 
-  const [resources, setResources] = useState('post')
-
-  useEffect(()=>{
-    console.log('resource changed')
-
-    return () => {
-      console.log('return from resource change')
-    }
-  },[resources])
+  useEffect(() => {
+    renderCount.current = renderCount.current + 1
+  })
+  
 
   return (
     <div className="App">
-      <button onClick={()=>setResources('post')}>Post</button>
-      <button onClick={()=>setResources('users')}>Users</button>
-      <button onClick={()=>setResources('comments')}>Comments</button>
-      <h1>{resources}</h1>
-
+      <input type="text" value={name} onChange={e => setName(e.target.value)} />
+      <div>My name is {name}</div>
+      <div>I rendered {renderCount.current} times</div>
     </div>
   );
 }
