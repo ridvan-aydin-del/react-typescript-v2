@@ -1,20 +1,33 @@
-import React, { useState,useEffect,useRef } from 'react';
+import React, { useState,useMemo, useEffect } from 'react';
 
 export function App() {
-  const [name, setName] = useState('');
-  const inputRef =  React.createRef<HTMLInputElement>();
-  
-  function focus(){
-    inputRef.current?.focus();
-  }
-
+  const [number,setNumber] = useState(0);
+  const [dark,setDark] = useState(false);
+  const doubleNumber = useMemo(()=>{
+    return slowFunction(number);
+  },[number]);
+  const themeStyles = useMemo(()=>{
+    return {
+      backgroundColor: dark ? 'black' : 'white',
+      color: dark ? 'white' : 'black'
+    }
+  },[dark]);
+  useEffect(()=>{
+    console.log("Theme Changed")
+  },[themeStyles])
   return (
-    <div className="App">
-      <input ref={inputRef} value={name} onChange={e => setName(e.target.value)} />
-      <div>My name is {name}</div>
-      <button onClick={focus}>Focus</button>
+    <div className="main">
+      <input type="number" value={number} onChange={e => setNumber(parseInt(e.target.value))} />
+      <button onClick={()=>setDark(prevDark => !prevDark)}>Change Theme</button>
+      <div style={themeStyles}>{doubleNumber}</div>
     </div>
   );
 }
 
+
+function slowFunction(num:number){
+  console.log('Calling Slow Function');
+  for(let i=0;i<=1000000000;i++){}
+  return num * 2;
+}
 export default App;
